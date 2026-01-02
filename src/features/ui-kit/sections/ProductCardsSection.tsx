@@ -11,6 +11,7 @@ export default function ProductCardsSection() {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 xl:gap-5">
         <ProductCard
+          id="headphones-1"
           image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop"
           name="Premium Headphones"
           description="High-quality wireless headphones with noise cancellation"
@@ -19,6 +20,7 @@ export default function ProductCardsSection() {
           onAddToCart={() => toast.success("Premium Headphones added to cart!")}
         />
         <ProductCard
+          id="watch-1"
           image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop"
           name="Smart Watch"
           description="Feature-rich smartwatch with health tracking"
@@ -27,6 +29,7 @@ export default function ProductCardsSection() {
           onAddToCart={() => toast.success("Smart Watch added to cart!")}
         />
         <ProductCard
+          id="sunglasses-1"
           image="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop"
           name="Designer Sunglasses"
           description="Stylish sunglasses with UV protection"
