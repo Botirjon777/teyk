@@ -148,6 +148,13 @@ body {
   width: 100%;
 }
 
+/* Page with top navbar and bottom navigation */
+.page-with-nav {
+  min-height: 100vh;
+  padding-top: 4rem; /* 64px for top navbar */
+  padding-bottom: 5rem; /* 80px for bottom nav */
+}
+
 .container{
   width: 100%;
   max-width: 1200px;

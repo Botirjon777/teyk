@@ -1,6 +1,8 @@
+import Link from "next/link";
 import Button from "./Button";
 
 export interface ProductCardProps {
+  id: string | number;
   image: string;
   name: string;
   description: string;
@@ -11,6 +13,7 @@ export interface ProductCardProps {
 }
 
 export default function ProductCard({
+  id,
   image,
   name,
   description,
@@ -49,47 +52,56 @@ export default function ProductCard({
   };
 
   return (
-    <div
-      className={`bg-card-background border border-border rounded-xl overflow-hidden shadow-shadow-lg hover:shadow-shadow-md transition-all duration-300 ${className}`}
-    >
-      <div className="aspect-square w-full overflow-hidden bg-gray-100">
-        <img
-          src={image}
-          alt={name}
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-        />
-      </div>
+    <Link href={`/product/${id}`}>
+      <div
+        className={`bg-card-background border border-border rounded-xl overflow-hidden shadow-shadow-lg hover:shadow-shadow-md transition-all duration-300 cursor-pointer ${className}`}
+      >
+        <div className="aspect-square w-full overflow-hidden bg-gray-100">
+          <img
+            src={image}
+            alt={name}
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
 
-      <div className="p-2.5 xl:p-5">
-        <h3 className="text-lg font-semibold text-primary-text mb-2 line-clamp-1">
-          {name}
-        </h3>
+        <div className="p-2.5 xl:p-5">
+          <h3 className="text-lg font-semibold text-primary-text mb-2 line-clamp-1">
+            {name}
+          </h3>
 
-        <p className="text-sm text-secondary-text mb-3 line-clamp-2">
-          {description}
-        </p>
+          <p className="text-sm text-secondary-text mb-3 line-clamp-2">
+            {description}
+          </p>
 
-        {rating > 0 && (
-          <div className="flex items-center gap-1 mb-3 text-lg">
-            {renderStars(rating)}
-            <span className="text-xs text-secondary-text ml-1">
-              ({rating.toFixed(1)})
-            </span>
-          </div>
-        )}
-
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-primary-text">
-            ${price.toFixed(2)}
-          </span>
-
-          {onAddToCart && (
-            <Button variant="primary" size="small" onClick={onAddToCart}>
-              Add to Cart
-            </Button>
+          {rating > 0 && (
+            <div className="flex items-center gap-1 mb-3 text-lg">
+              {renderStars(rating)}
+              <span className="text-xs text-secondary-text ml-1">
+                ({rating.toFixed(1)})
+              </span>
+            </div>
           )}
+
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-bold text-primary-text">
+              ${price.toFixed(2)}
+            </span>
+
+            {onAddToCart && (
+              <Button
+                variant="primary"
+                size="small"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onAddToCart();
+                }}
+              >
+                Add to Cart
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
