@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "@/navigation";
+import { useTranslations } from "next-intl";
 import { useCartStore } from "@/store/cartStore";
+import { useLocationStore } from "@/store/locationStore";
+import { getUserLocation } from "@/lib/geolocation";
 import MobileSidebar from "@/components/ui/MobileSidebar";
+import toast from "react-hot-toast";
 
 interface NavbarProps {
   cartItemCount?: number;
@@ -12,7 +16,44 @@ interface NavbarProps {
 export default function Navbar({ cartItemCount }: NavbarProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
+  const t = useTranslations("Navbar");
   const totalItems = useCartStore((state) => state.getTotalItems());
+
+  const { location, isLoading, error, setLocation, setLoading, setError } =
+    useLocationStore();
+
+  useEffect(() => {
+    // Hydrate location from localStorage on mount
+    useLocationStore.persist.rehydrate();
+  }, []);
+
+  const handleGetLocation = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const userLocation = await getUserLocation();
+      setLocation(userLocation);
+      toast.success(t("updateLocation"));
+    } catch (err: any) {
+      const errorMessage = err.message || t("locationError");
+      setError(errorMessage);
+      toast.error(errorMessage);
+    }
+  };
+
+  const getLocationDisplay = () => {
+    if (isLoading) {
+      return t("detectingLocation");
+    }
+    if (error) {
+      return t("locationError");
+    }
+    if (location) {
+      return location.city || location.address;
+    }
+    return t("setLocation");
+  };
 
   return (
     <>
@@ -42,25 +83,33 @@ export default function Navbar({ cartItemCount }: NavbarProps) {
           </button>
 
           {/* Center - Location */}
-          <div className="flex items-center gap-1.5">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-primary-green"
-            >
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span className="text-sm font-medium text-primary-text">
-              Current Location
+          <button
+            onClick={handleGetLocation}
+            disabled={isLoading}
+            className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-soft-teal rounded-lg transition-colors duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed max-w-[60%]"
+          >
+            {isLoading ? (
+              <div className="w-4 h-4 border-2 border-primary-green border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={error ? "text-red" : "text-primary-green"}
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            )}
+            <span className="text-sm font-medium text-primary-text truncate">
+              {getLocationDisplay()}
             </span>
-          </div>
+          </button>
 
           {/* Right - Cart Button */}
           <button

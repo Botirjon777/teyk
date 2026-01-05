@@ -110,5 +110,14 @@
     "emptyDesc": "Add your favorite coffee drinks to your wishlist",
     "browseProducts": "Browse Products",
     "itemCount": "items"
+  },
+  "Navbar": {
+    "currentLocation": "Current Location",
+    "detectingLocation": "Detecting location...",
+    "setLocation": "Set location",
+    "locationError": "Location error",
+    "allowLocation": "Allow location access",
+    "locationDenied": "Location access denied",
+    "updateLocation": "Update location"
   }
 }
