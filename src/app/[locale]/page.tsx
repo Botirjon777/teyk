@@ -3,8 +3,11 @@
 import Navbar from "@/components/ui/Navbar";
 import ProductCard from "@/components/ui/ProductCard";
 import Badge from "@/components/ui/Badge";
+import { useTranslations } from "next-intl";
 
 export default function Home() {
+  const t = useTranslations("Home");
+
   const promoProducts = [
     {
       id: 1,
@@ -60,15 +63,18 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="pt-safe min-h-screen bg-background">
       {/* Navbar */}
       <Navbar />
 
-      {/* Main Content - Add top padding to account for fixed navbar */}
-      <main className="pt-16 pb-6">
+      {/* Main Content - Add top padding to account for fixed navbar and safe area */}
+      <main
+        className="pb-24"
+        style={{ paddingTop: "calc(4rem + var(--safe-area-top))" }}
+      >
         {/* Promo Banner */}
         <section className="px-4 pt-4 pb-6">
-          <div className="relative bg-gradient-to-br from-primary-green to-secondary-teal rounded-2xl overflow-hidden shadow-shadow-lg">
+          <div className="relative bg-linear-to-br from-primary-green to-secondary-teal rounded-2xl overflow-hidden shadow-shadow-lg">
             <div className="absolute inset-0 opacity-20">
               <img
                 src="/promo-banner.png"
@@ -78,16 +84,12 @@ export default function Home() {
             </div>
             <div className="relative p-6 text-white">
               <Badge variant="yellow" className="mb-3">
-                Limited Offer
+                {t("limitedOffer")}
               </Badge>
-              <h2 className="text-2xl font-bold mb-2">
-                Buy 1 Get 1 Free
-              </h2>
-              <p className="text-sm opacity-90 mb-4">
-                On all coffee drinks this week!
-              </p>
+              <h2 className="text-2xl font-bold mb-2">{t("buy1get1")}</h2>
+              <p className="text-sm opacity-90 mb-4">{t("promoSub")}</p>
               <button className="bg-white text-primary-green px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-soft-teal transition-colors duration-200 active:scale-95">
-                Order Now
+                {t("orderNow")}
               </button>
             </div>
           </div>
@@ -97,10 +99,10 @@ export default function Home() {
         <section className="px-4 pb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-primary-text">
-              Promo Products
+              {t("promoProducts")}
             </h2>
             <button className="text-sm text-primary-green font-medium">
-              See All
+              {t("seeAll")}
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -122,10 +124,10 @@ export default function Home() {
         <section className="px-4 pb-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-primary-text">
-              Popular Products
+              {t("popularProducts")}
             </h2>
             <button className="text-sm text-primary-green font-medium">
-              See All
+              {t("seeAll")}
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3">
