@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "../globals.css";
 import { Toaster } from "react-hot-toast";
 import BottomNav from "@/components/ui/BottomNav";
@@ -32,6 +33,12 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <Script
+          src="https://api-maps.yandex.ru/v3/?apikey=c42d92ce-f66b-4a04-83fe-cc93bad19ff6&lang=en_US"
+          strategy="beforeInteractive"
+        />
+      </head>
       <body className="antialiased font-mabry">
         <NextIntlClientProvider messages={messages}>
           <Toaster
