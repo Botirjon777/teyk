@@ -110,5 +110,14 @@
     "emptyDesc": "Sevimli qahva ichimliklaringizni sevimlilar ro'yxatiga qo'shing",
     "browseProducts": "Mahsulotlarni ko'rish",
     "itemCount": "mahsulot"
+  },
+  "Navbar": {
+    "currentLocation": "Joriy manzil",
+    "detectingLocation": "Manzil aniqlanmoqda...",
+    "setLocation": "Manzilni belgilash",
+    "locationError": "Manzil xatosi",
+    "allowLocation": "Manzilga ruxsat bering",
+    "locationDenied": "Manzilga ruxsat berilmadi",
+    "updateLocation": "Manzilni yangilash"
   }
 }
