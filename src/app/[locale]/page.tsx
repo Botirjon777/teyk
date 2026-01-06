@@ -4,63 +4,15 @@ import Navbar from "@/components/ui/Navbar";
 import ProductCard from "@/components/ui/ProductCard";
 import Badge from "@/components/ui/Badge";
 import { useTranslations } from "next-intl";
+import { PRODUCTS } from "@/data/products";
+import { getShopById } from "@/data/shops";
 
 export default function Home() {
   const t = useTranslations("Home");
 
-  const promoProducts = [
-    {
-      id: 1,
-      image: "/cappuccino.png",
-      name: "Cappuccino",
-      description: "Rich espresso with steamed milk foam",
-      price: 4.5,
-      rating: 4.8,
-    },
-    {
-      id: 2,
-      image: "/latte.png",
-      name: "Caffe Latte",
-      description: "Smooth espresso with steamed milk",
-      price: 5.0,
-      rating: 4.7,
-    },
-  ];
-
-  const popularProducts = [
-    {
-      id: 3,
-      image: "/espresso.png",
-      name: "Espresso",
-      description: "Strong and bold Italian coffee",
-      price: 3.5,
-      rating: 4.9,
-    },
-    {
-      id: 4,
-      image: "/cappuccino.png",
-      name: "Mocha",
-      description: "Chocolate and espresso blend",
-      price: 5.5,
-      rating: 4.6,
-    },
-    {
-      id: 5,
-      image: "/latte.png",
-      name: "Americano",
-      description: "Espresso with hot water",
-      price: 3.0,
-      rating: 4.5,
-    },
-    {
-      id: 6,
-      image: "/espresso.png",
-      name: "Macchiato",
-      description: "Espresso with a dollop of foam",
-      price: 4.0,
-      rating: 4.7,
-    },
-  ];
+  // Use actual products from data
+  const promoProducts = PRODUCTS.slice(0, 2); // First 2 products for promo
+  const popularProducts = PRODUCTS.slice(2); // Rest for popular
 
   return (
     <div className="pt-safe min-h-screen bg-background">
@@ -106,17 +58,30 @@ export default function Home() {
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {promoProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                image={product.image}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                rating={product.rating}
-              />
-            ))}
+            {promoProducts.map((product) => {
+              // Get first available shop for this product
+              const firstShopId = product.availableShops[0];
+              const shop = getShopById(firstShopId);
+
+              return (
+                <div key={product.id} className="relative">
+                  <ProductCard
+                    id={product.id}
+                    image={product.image}
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                    rating={product.rating}
+                  />
+                  {shop && (
+                    <div className="mt-2 flex items-center gap-1 text-xs text-secondary-text">
+                      <span>📍</span>
+                      <span>{shop.brand}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
 
@@ -131,17 +96,30 @@ export default function Home() {
             </button>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            {popularProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                id={product.id}
-                image={product.image}
-                name={product.name}
-                description={product.description}
-                price={product.price}
-                rating={product.rating}
-              />
-            ))}
+            {popularProducts.map((product) => {
+              // Get first available shop for this product
+              const firstShopId = product.availableShops[0];
+              const shop = getShopById(firstShopId);
+
+              return (
+                <div key={product.id} className="relative">
+                  <ProductCard
+                    id={product.id}
+                    image={product.image}
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                    rating={product.rating}
+                  />
+                  {shop && (
+                    <div className="mt-2 flex items-center gap-1 text-xs text-secondary-text">
+                      <span>📍</span>
+                      <span>{shop.brand}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       </main>

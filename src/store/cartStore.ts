@@ -8,6 +8,8 @@ export interface CartItem {
   price: number;
   image: string;
   quantity: number;
+  shopId: number;
+  shopName: string;
   customizations: {
     size: "small" | "medium" | "large";
     sugar: "no-sugar" | "less-sugar" | "normal" | "extra-sugar";
@@ -25,6 +27,7 @@ interface CartState {
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  getItemsByShop: () => Record<number, CartItem[]>;
 }
 
 export const useCartStore = create<CartState>()(
@@ -72,6 +75,16 @@ export const useCartStore = create<CartState>()(
           (total, item) => total + item.price * item.quantity,
           0
         );
+      },
+      getItemsByShop: () => {
+        const state = get();
+        return state.items.reduce((acc, item) => {
+          if (!acc[item.shopId]) {
+            acc[item.shopId] = [];
+          }
+          acc[item.shopId].push(item);
+          return acc;
+        }, {} as Record<number, CartItem[]>);
       },
     }),
     {
