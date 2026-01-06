@@ -1,80 +1,80 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Regular.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Italic.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Light.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-LightItalic.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-LightItalic.ttf") format("truetype");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Medium.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-MediumItalic.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-MediumItalic.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Bold.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-BoldItalic.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-Black.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-Black.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'MabryPro';
-  src: url('/fonts/MabryPro/MabryPro-BlackItalic.ttf') format('truetype');
+  font-family: "MabryPro";
+  src: url("/fonts/MabryPro/MabryPro-BlackItalic.ttf") format("truetype");
   font-weight: 900;
   font-style: italic;
   font-display: swap;
@@ -82,28 +82,28 @@
 
 :root {
   /* Primary Colors - Main Actions */
-  --primary-green: #007B6A;
-  --secondary-teal: #71B5AD;
-  --soft-teal: #C8E0DC;
-  
+  --primary-green: #007b6a;
+  --secondary-teal: #71b5ad;
+  --soft-teal: #c8e0dc;
+
   /* Accent Colors */
-  --rating-yellow: #DBAD78;
-  --red: #FF4B4B;
-  
+  --rating-yellow: #dbad78;
+  --red: #ff4b4b;
+
   /* Background Colors */
-  --background: #F4F4F4;
-  --card-background: #FFFFFF;
-  
+  --background: #f4f4f4;
+  --card-background: #ffffff;
+
   /* Border & Dividers */
-  --border: #E0E0E0;
-  
+  --border: #e0e0e0;
+
   /* Text Colors */
   --primary-text: #313332;
   --secondary-text: #777777;
-  
+
   /* Button States */
-  --disabled-gray: #C3C3C3;
-  
+  --disabled-gray: #c3c3c3;
+
   /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
@@ -124,25 +124,26 @@
 
 @theme inline {
   /* Colors */
-  --color-primary-green: #007B6A;
-  --color-secondary-teal: #71B5AD;
-  --color-soft-teal: #C8E0DC;
-  --color-rating-yellow: #DBAD78;
-  --color-red: #FF4B4B;
-  --color-background: #F4F4F4;
-  --color-card-background: #FFFFFF;
-  --color-border: #E0E0E0;
+  --color-primary-green: #007b6a;
+  --color-secondary-teal: #71b5ad;
+  --color-soft-teal: #c8e0dc;
+  --color-rating-yellow: #dbad78;
+  --color-red: #ff4b4b;
+  --color-background: #f4f4f4;
+  --color-card-background: #ffffff;
+  --color-border: #e0e0e0;
   --color-primary-text: #313332;
   --color-secondary-text: #777777;
-  --color-disabled-gray: #C3C3C3;
-  
+  --color-disabled-gray: #c3c3c3;
+
   /* Box Shadows */
   --box-shadow-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --box-shadow-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
   --box-shadow-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
-  
+
   /* Font Family */
-  --font-sans: 'MabryPro', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: "MabryPro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 body {
@@ -152,7 +153,7 @@ body {
   padding-top: env(safe-area-inset-top);
 }
 
-.page{
+.page {
   padding: 1rem;
 
   @media (min-width: 1280px) {
@@ -164,19 +165,19 @@ body {
 /* Page with top navbar and bottom navigation */
 .page-with-nav {
   min-height: 100vh;
-  padding-top: calc(4rem + var(--safe-area-top));
+  padding-top: calc(60px + 4rem + var(--safe-area-top));
   padding-bottom: calc(5rem + var(--safe-area-bottom));
 }
 
 .pt-safe {
-  padding-top: calc(1rem + var(--safe-area-top));
+  padding-top: calc(60px + 1rem + var(--safe-area-top));
 }
 
 .pb-safe {
   padding-bottom: calc(1rem + var(--safe-area-bottom));
 }
 
-.container{
+.container {
   width: 100%;
   max-width: 1200px;
   margin-left: auto;
