@@ -165,12 +165,12 @@ body {
 /* Page with top navbar and bottom navigation */
 .page-with-nav {
   min-height: 100vh;
-  padding-top: calc(60px + 4rem + var(--safe-area-top));
+  padding-top: calc(80px + 4rem + var(--safe-area-top));
   padding-bottom: calc(5rem + var(--safe-area-bottom));
 }
 
 .pt-safe {
-  padding-top: calc(60px + 1rem + var(--safe-area-top));
+  padding-top: calc(80px + 1rem + var(--safe-area-top));
 }
 
 .pb-safe {

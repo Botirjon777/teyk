@@ -24,11 +24,8 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // Await params in Next.js 15
   const { locale } = await params;
 
-  // Providing all messages to the client
-  // side is the easiest way to get started
   const messages = await getMessages();
 
   return (
@@ -58,6 +55,7 @@ export default async function RootLayout({
               },
             }}
           />
+          <div className="fixed top-0 left-0 right-0 h-[80px] bg-background z-30" />
           {children}
           <BottomNav />
         </NextIntlClientProvider>
