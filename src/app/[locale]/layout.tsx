@@ -35,7 +35,7 @@ export default async function RootLayout({
     <html lang={locale}>
       <head>
         <Script
-          src="https://api-maps.yandex.ru/v3/?apikey=c42d92ce-f66b-4a04-83fe-cc93bad19ff6&lang=en_US"
+          src="https://api-maps.yandex.ru/v3/?apikey=4aaff061-a4fe-409d-9c0d-1452a5c030ce&lang=en_US"
           strategy="beforeInteractive"
         />
       </head>
