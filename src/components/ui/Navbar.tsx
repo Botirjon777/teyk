@@ -57,7 +57,7 @@ export default function Navbar({ cartItemCount }: NavbarProps) {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-card-background border-b border-border shadow-shadow-sm pt-[env(safe-area-inset-top)]">
+      <nav className="fixed top-[60px] left-0 right-0 z-40 bg-card-background border-b border-border shadow-shadow-sm pt-[env(safe-area-inset-top)]">
         <div className="flex items-center justify-between px-4 py-3">
           {/* Left - Menu Button */}
           <button
