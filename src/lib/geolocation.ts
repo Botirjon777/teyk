@@ -45,7 +45,7 @@ export async function reverseGeocode(
 ): Promise<{ address: string; city: string }> {
   try {
     const response = await fetch(
-      `https://geocode-maps.yandex.ru/1.x/?apikey=c42d92ce-f66b-4a04-83fe-cc93bad19ff6&geocode=${longitude},${latitude}&format=json&lang=en_US`
+      `https://geocode-maps.yandex.ru/1.x/?apikey=4aaff061-a4fe-409d-9c0d-1452a5c030ce&geocode=${longitude},${latitude}&format=json&lang=en_US`
     );
 
     if (!response.ok) {
