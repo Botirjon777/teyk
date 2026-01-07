@@ -36,6 +36,7 @@ export async function loadYandexMaps() {
               YMapMarker,
               YMapControls,
               YMapControlButton,
+              YMapFeature,
             } = reactify.module(window.ymaps3);
 
             resolve({
@@ -46,6 +47,7 @@ export async function loadYandexMaps() {
               YMapMarker,
               YMapControls,
               YMapControlButton,
+              YMapFeature,
               ymaps3: window.ymaps3,
             });
           })
