@@ -35,6 +35,10 @@ export default async function RootLayout({
           src="https://api-maps.yandex.ru/v3/?apikey=4aaff061-a4fe-409d-9c0d-1452a5c030ce&lang=en_US"
           strategy="beforeInteractive"
         />
+        <Script
+          src="https://mapgl.2gis.com/api/js/v1"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className="antialiased font-mabry">
         <NextIntlClientProvider messages={messages}>

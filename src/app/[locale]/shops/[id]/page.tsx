@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/ui/Navbar";
 import { getShopById } from "@/data/shops";
 import { loadYandexMaps } from "@/lib/ymaps";
+import DGMap from "@/components/ui/DGMap";
 import {
   IoLocationOutline,
   IoTimeOutline,
@@ -13,28 +14,20 @@ import {
   IoArrowBackOutline,
 } from "react-icons/io5";
 
-export default function ShopDetailPage() {
-  const params = useParams();
+export default function ShopDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const router = useRouter();
-  const shopId = parseInt(params.id as string);
+  const shopId = parseInt(id);
   const shop = getShopById(shopId);
 
-  const [ymapsComponents, setYmapsComponents] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadYandexMaps()
-      .then((components) => {
-        setYmapsComponents(components);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load Yandex Maps:", err);
-        setError("Failed to load map");
-        setLoading(false);
-      });
-  }, []);
+  // 2gis loads via script tag
 
   if (!shop) {
     return (
@@ -114,7 +107,7 @@ export default function ShopDetailPage() {
                   <p className="text-secondary-text">Loading map...</p>
                 </div>
               </div>
-            ) : error || !ymapsComponents ? (
+            ) : error ? (
               <div className="flex items-center justify-center h-full bg-card-background">
                 <div className="text-center">
                   <IoLocationOutline className="w-16 h-16 text-secondary-text mx-auto mb-4" />
@@ -127,6 +120,12 @@ export default function ShopDetailPage() {
                 </div>
               </div>
             ) : (
+              <DGMap
+                center={shop.coordinates}
+                zoom={LOCATION.zoom}
+                markers={[{ coordinates: shop.coordinates }]}
+              />
+              /* Yandex Maps preserved but unused
               <ymapsComponents.YMap
                 location={ymapsComponents.reactify.useDefault(LOCATION)}
                 style={{ width: "100%", height: "100%" }}
@@ -134,7 +133,6 @@ export default function ShopDetailPage() {
                 <ymapsComponents.YMapDefaultSchemeLayer />
                 <ymapsComponents.YMapDefaultFeaturesLayer />
 
-                {/* Shop Marker */}
                 <ymapsComponents.YMapMarker
                   coordinates={ymapsComponents.reactify.useDefault(
                     shop.coordinates
@@ -147,6 +145,7 @@ export default function ShopDetailPage() {
                   </div>
                 </ymapsComponents.YMapMarker>
               </ymapsComponents.YMap>
+              */
             )}
           </div>
         </section>

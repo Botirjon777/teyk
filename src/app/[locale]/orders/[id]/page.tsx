@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/ui/Navbar";
 import { useOrderStore } from "@/store/orderStore";
 import { useLocationStore } from "@/store/locationStore";
 import { loadYandexMaps } from "@/lib/ymaps";
+import DGMap from "@/components/ui/DGMap";
 import {
   IoCheckmarkCircleOutline,
   IoLocationOutline,
@@ -16,15 +17,18 @@ import {
   IoNavigateOutline,
 } from "react-icons/io5";
 
-export default function OrderConfirmationPage() {
-  const params = useParams();
+export default function OrderConfirmationPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
   const router = useRouter();
-  const orderId = params.id as string;
+  const orderId = id;
   const { getOrderById } = useOrderStore();
   const { location: userLocation } = useLocationStore();
 
-  const [ymapsComponents, setYmapsComponents] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const order = getOrderById(orderId);
@@ -34,18 +38,7 @@ export default function OrderConfirmationPage() {
     useLocationStore.persist.rehydrate();
   }, []);
 
-  useEffect(() => {
-    loadYandexMaps()
-      .then((components) => {
-        setYmapsComponents(components);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load Yandex Maps:", err);
-        setError("Failed to load map");
-        setLoading(false);
-      });
-  }, []);
+  // 2gis loads via script tag
 
   if (!order) {
     return (
@@ -121,7 +114,7 @@ export default function OrderConfirmationPage() {
                   <p className="text-secondary-text">Loading map...</p>
                 </div>
               </div>
-            ) : error || !ymapsComponents ? (
+            ) : error ? (
               <div className="flex items-center justify-center h-full bg-card-background">
                 <div className="text-center">
                   <IoLocationOutline className="w-16 h-16 text-secondary-text mx-auto mb-4" />
@@ -134,6 +127,27 @@ export default function OrderConfirmationPage() {
                 </div>
               </div>
             ) : (
+              <DGMap
+                center={mapCenter as [number, number]}
+                zoom={LOCATION.zoom}
+                markers={[
+                  ...(userLocation
+                    ? [
+                        {
+                          coordinates: [
+                            userLocation.longitude,
+                            userLocation.latitude,
+                          ] as [number, number],
+                          isUserLocation: true,
+                        },
+                      ]
+                    : []),
+                  {
+                    coordinates: order.shopCoordinates as [number, number],
+                  },
+                ]}
+              />
+              /* Yandex Maps preserved but unused
               <ymapsComponents.YMap
                 location={ymapsComponents.reactify.useDefault(LOCATION)}
                 style={{ width: "100%", height: "100%" }}
@@ -141,7 +155,6 @@ export default function OrderConfirmationPage() {
                 <ymapsComponents.YMapDefaultSchemeLayer />
                 <ymapsComponents.YMapDefaultFeaturesLayer />
 
-                {/* User Location Marker */}
                 {userLocation && (
                   <ymapsComponents.YMapMarker
                     coordinates={ymapsComponents.reactify.useDefault([
@@ -155,7 +168,6 @@ export default function OrderConfirmationPage() {
                   </ymapsComponents.YMapMarker>
                 )}
 
-                {/* Shop Marker */}
                 <ymapsComponents.YMapMarker
                   coordinates={ymapsComponents.reactify.useDefault(
                     order.shopCoordinates
@@ -168,6 +180,7 @@ export default function OrderConfirmationPage() {
                   </div>
                 </ymapsComponents.YMapMarker>
               </ymapsComponents.YMap>
+              */
             )}
           </div>
         </section>

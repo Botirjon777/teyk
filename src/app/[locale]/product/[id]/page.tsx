@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
@@ -19,14 +19,15 @@ import { BiCoffee } from "react-icons/bi";
 import toast from "react-hot-toast";
 
 interface ProductPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
   const router = useRouter();
-  const productId = parseInt(params.id);
+  const { id } = use(params);
+  const productId = parseInt(id);
   const productData = getProductData(productId);
 
   // Fallback product if not found

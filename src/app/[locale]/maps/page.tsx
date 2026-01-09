@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import Navbar from "@/components/ui/Navbar";
 import { useTranslations } from "next-intl";
 import { loadYandexMaps } from "@/lib/ymaps";
+import DGMap from "@/components/ui/DGMap";
 import { getCurrentLocation } from "@/lib/geoUtils";
 import {
   IoLocationOutline,
@@ -216,9 +217,9 @@ function calculateDistance(
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
-    Math.cos((lat2 * Math.PI) / 180) *
-    Math.sin(dLon / 2) *
-    Math.sin(dLon / 2);
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
@@ -256,8 +257,7 @@ function RatingStars({ rating }: { rating: number }) {
 export default function MapsPage() {
   const t = useTranslations("Location");
   const router = useRouter();
-  const [ymapsComponents, setYmapsComponents] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(
     null
@@ -272,7 +272,9 @@ export default function MapsPage() {
     zoom: 11,
   });
   const [bookmarkedShops, setBookmarkedShops] = useState<number[]>([]);
-  const [sheetHeight, setSheetHeight] = useState<"collapsed" | "partial" | "expanded">("partial");
+  const [sheetHeight, setSheetHeight] = useState<
+    "collapsed" | "partial" | "expanded"
+  >("partial");
   const [dragStartY, setDragStartY] = useState<number | null>(null);
   const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -315,19 +317,7 @@ export default function MapsPage() {
     };
   }, []);
 
-  // Load Yandex Maps
-  useEffect(() => {
-    loadYandexMaps()
-      .then((components) => {
-        setYmapsComponents(components);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load Yandex Maps:", err);
-        setError("Failed to load map");
-        setLoading(false);
-      });
-  }, []);
+  // 2gis loads via script tag, no need for loading state
 
   // Handle shop click - zoom to street level
   const handleShopClick = (shop: LocationType) => {
@@ -447,38 +437,6 @@ export default function MapsPage() {
     );
   }
 
-  if (error || !ymapsComponents) {
-    return (
-      <div className="pt-safe min-h-screen bg-background">
-        <Navbar />
-        <main
-          className="pb-24"
-          style={{ paddingTop: "calc(4rem + var(--safe-area-top))" }}
-        >
-          <div className="flex items-center justify-center h-[calc(100vh-8rem)]">
-            <div className="text-center">
-              <IoLocationOutline className="w-24 h-24 text-secondary-text mx-auto mb-4" />
-              <p className="text-primary-text font-semibold mb-2">
-                Map unavailable
-              </p>
-              <p className="text-secondary-text text-sm">
-                Please check your connection and try again
-              </p>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
-
-  const {
-    YMap,
-    YMapDefaultSchemeLayer,
-    YMapDefaultFeaturesLayer,
-    YMapMarker,
-    reactify,
-  } = ymapsComponents;
-
   return (
     <div className="pt-safe min-h-screen bg-background">
       <Navbar />
@@ -487,8 +445,39 @@ export default function MapsPage() {
         className="pb-24 relative"
         style={{ paddingTop: "calc(4rem + var(--safe-area-top))" }}
       >
-        {/* Map - Full screen */}
-        <section className="h-[calc(100vh-4rem-var(--safe-area-top)-6rem)]">
+        {/* Map - Adjusts height based on bottom sheet */}
+        <section
+          className={`transition-all duration-300 ${
+            selectedShop
+              ? sheetHeight === "expanded"
+                ? "h-[10vh]"
+                : sheetHeight === "partial"
+                ? "h-[50vh]"
+                : "h-[90vh]"
+              : "h-[calc(100vh-4rem-var(--safe-area-top)-6rem)]"
+          }`}
+        >
+          <DGMap
+            center={mapLocation.center}
+            zoom={mapLocation.zoom}
+            markers={[
+              ...(userLocation
+                ? [
+                    {
+                      coordinates: userLocation,
+                      isUserLocation: true,
+                    },
+                  ]
+                : []),
+              ...ALL_LOCATIONS.map((loc) => ({
+                coordinates: loc.coordinates as [number, number],
+                onClick: () => handleShopClick(loc),
+                isSelected: selectedShop?.id === loc.id,
+              })),
+            ]}
+          />
+          {/* Yandex Maps preserved but unused */}
+          {/* 
           <YMap
             key={`${mapLocation.center[0]}-${mapLocation.center[1]}-${mapLocation.zoom}`}
             location={reactify.useDefault(mapLocation)}
@@ -497,15 +486,12 @@ export default function MapsPage() {
             <YMapDefaultSchemeLayer />
             <YMapDefaultFeaturesLayer />
 
-            {/* User location marker - Green pulsing dot */}
             {userLocation && (
               <YMapMarker coordinates={reactify.useDefault(userLocation)}>
                 <div className="relative">
-                  {/* Pulsing ring */}
                   <div className="absolute inset-0 w-12 h-12 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
                     <div className="absolute inset-0 bg-primary-green rounded-full opacity-30 animate-ping"></div>
                   </div>
-                  {/* Main dot */}
                   <div className="relative w-6 h-6 bg-primary-green rounded-full flex items-center justify-center shadow-lg border-3 border-white -translate-x-1/2 -translate-y-1/2">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                   </div>
@@ -513,7 +499,6 @@ export default function MapsPage() {
               </YMapMarker>
             )}
 
-            {/* Coffee shop markers */}
             {ALL_LOCATIONS.map((location) => (
               <YMapMarker
                 key={location.id}
@@ -532,7 +517,6 @@ export default function MapsPage() {
                     <IoLocationOutline className="w-6 h-6 text-white" />
                   </div>
 
-                  {/* Tooltip on hover (only when not selected) */}
                   {selectedShop?.id !== location.id && (
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-lg shadow-lg p-3 min-w-[200px] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
                       <p className="font-semibold text-primary-text text-sm">
@@ -547,6 +531,7 @@ export default function MapsPage() {
               </YMapMarker>
             ))}
           </YMap>
+          */}
         </section>
 
         {/* Bottom Sheet Modal - Google Maps Style */}
